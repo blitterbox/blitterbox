@@ -1,18 +1,25 @@
 {
   "name": "blitterbox",
-  "version": "0.1.0",
+  "version": "1.0.1",
   "private": true,
   "type": "module",
   "engines": {
     "node": ">=20"
   },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "blitterbox": "dist/mcp/server.js"
+  },
   "files": [
-    "src",
+    "dist",
     "public",
     "tokens.json",
     "examples"
   ],
   "scripts": {
+    "build": "tsc && node scripts/fix-esm-imports.mjs",
+    "prepack": "npm run build",
     "check:tokens": "tsx src/tokens/check.ts",
     "check:iso": "tsx src/iso/check.ts",
     "render:primitives-check": "tsx src/primitives/renderCheck.ts",
@@ -25,7 +32,8 @@
     "mcp:check": "tsx src/mcp/check.ts",
     "render:tower": "tsx src/compositions/renderTower.ts",
     "render:logo-clip": "tsx src/compositions/renderLogoClipVideo.ts",
-    "swap-test": "tsx src/swapTest.ts"
+    "swap-test": "tsx src/swapTest.ts",
+    "check:dist": "npm run build && node scripts/test-compiled-server.mjs"
   },
   "devDependencies": {
     "@remotion/cli": "^4.0.536",

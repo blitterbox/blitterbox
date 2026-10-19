@@ -5,7 +5,16 @@ import { computeSceneLayout } from "../scene/layout";
 import type { Scene } from "../scene/schema";
 import { FPS, CANVAS_SIZE } from "../compositions/constants";
 
-const ENTRY_POINT = path.join(import.meta.dirname, "..", "remotion", "index.ts");
+// This file runs either as raw TS (via tsx, in dev) or as compiled JS (from
+// dist/, once published); pick the matching extension for the sibling
+// Remotion entry point so @remotion/bundler is given a file that exists.
+const SELF_IS_COMPILED = import.meta.url.endsWith(".js");
+const ENTRY_POINT = path.join(
+  import.meta.dirname,
+  "..",
+  "remotion",
+  SELF_IS_COMPILED ? "index.js" : "index.ts",
+);
 
 let bundleLocationPromise: Promise<string> | null = null;
 
