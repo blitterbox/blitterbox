@@ -40,6 +40,24 @@ function centroidOf(object: SceneObject): Point3 {
   };
 }
 
+/** Top-of-object anchor for a callout's leader line: the top face's center, not the object's middle. */
+function topAnchorOf(object: SceneObject): Point3 {
+  if (object.type === "block") {
+    const [x, y, z] = object.at;
+    const [w, d, h] = object.size;
+    return { x: x + w / 2, y: y + d / 2, z: z + h };
+  }
+  if (object.type === "platform") {
+    const [x, y, z] = object.at;
+    const [w, d] = object.size;
+    return { x: x + w / 2, y: y + d / 2, z: z + (object.height ?? 0.25) };
+  }
+  // Connector: anchor at whichever endpoint sits higher.
+  return object.from[2] >= object.to[2]
+    ? { x: object.from[0], y: object.from[1], z: object.from[2] }
+    : { x: object.to[0], y: object.to[1], z: object.to[2] };
+}
+
 function cornersOf(object: SceneObject): Point3[] {
   if (object.type === "block") return boxFaces(object.at, object.size).flatMap((f) => f.points);
   if (object.type === "platform") return boxFaces(object.at, platformSize3(object)).flatMap((f) => f.points);
@@ -112,7 +130,7 @@ export function computeSceneLayout(scene: Scene, fps: number, canvasSize: number
 
   const callouts: CalloutLayout[] = scene.callouts.map((c) => {
     const object = objectById.get(c.anchor);
-    const anchorRaw = object ? project(centroidOf(object)) : { x: 0, y: 0 };
+    const anchorRaw = object ? project(topAnchorOf(object)) : { x: 0, y: 0 };
     const labelRaw = { x: anchorRaw.x + iso.module * 1.5, y: anchorRaw.y - iso.module * 1.5 };
     const anchorLandedAt = landedAtFor(c.anchor);
     return {

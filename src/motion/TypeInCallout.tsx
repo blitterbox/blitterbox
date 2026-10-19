@@ -2,7 +2,11 @@ import React from "react";
 import { useCurrentFrame, useVideoConfig } from "remotion";
 import { motion as motionTokens, typography, color } from "../tokens/index";
 import { durationToFrames } from "../tokens/duration";
+import { ANTIALIAS_TEXT_STYLE } from "../tokens/textStyle";
 import type { Point2 } from "../iso/index";
+
+// Radius of the dot marking the leader line's anchor on the object.
+const ANCHOR_DOT_RADIUS = 1.5;
 
 export interface TypeInCalloutProps {
   text: string;
@@ -38,6 +42,7 @@ export function TypeInCallout({ text, anchorLandedAt, anchorPoint, labelPoint }:
         stroke={color.graphite}
         strokeWidth={1}
       />
+      <circle cx={anchorPoint.x} cy={anchorPoint.y} r={ANCHOR_DOT_RADIUS} fill={color.graphite} />
       <text
         x={labelPoint.x}
         y={labelPoint.y}
@@ -46,6 +51,7 @@ export function TypeInCallout({ text, anchorLandedAt, anchorPoint, labelPoint }:
         fontWeight={style.fontWeight}
         fontSize={style.fontSize}
         letterSpacing={style.letterSpacing}
+        style={ANTIALIAS_TEXT_STYLE}
       >
         {visibleText}
       </text>

@@ -17,11 +17,17 @@ export function Scene({ scene, size }: SceneProps) {
   const layout = computeSceneLayout(scene, fps, size);
   const { fit } = layout;
 
+  // Connectors are annotations between objects, not solid geometry: always
+  // paint them after (on top of) every block and platform, regardless of
+  // depth, so an arrow is never hidden behind the object it touches.
+  const solids = layout.ordered.filter((o) => o.object.type !== "connector");
+  const connectors = layout.ordered.filter((o) => o.object.type === "connector");
+
   return (
     <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
       <rect x={0} y={0} width={size} height={size} fill={layout.backgroundColor} />
       <g transform={`translate(${fit.tx}, ${fit.ty}) scale(${fit.scale})`}>
-        {layout.ordered.map(({ id, object, appearAt }) => {
+        {solids.map(({ id, object, appearAt }) => {
           if (object.type === "block") {
             return (
               <Block key={id} at={object.at} size={object.size} faces={object.faces} appearAt={appearAt} />
@@ -38,6 +44,10 @@ export function Scene({ scene, size }: SceneProps) {
               />
             );
           }
+          return null;
+        })}
+        {connectors.map(({ id, object, appearAt }) => {
+          if (object.type !== "connector") return null;
           return <Connector key={id} from={object.from} to={object.to} appearAt={appearAt} />;
         })}
       </g>

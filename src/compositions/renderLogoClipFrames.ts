@@ -1,15 +1,16 @@
 import path from "node:path";
 import { renderCompositionStill } from "../render/index";
-import { durationToFrames } from "../tokens/duration";
-import { motion } from "../tokens/index";
+import { computeLogoTimings, LOGO_CLIP_DURATION_FRAMES } from "./LogoClip";
 import { FPS } from "./constants";
-import { LOGO_CLIP_DURATION_FRAMES } from "./LogoClip";
 
+const { nameFrame, waveSettledFrame } = computeLogoTimings(FPS);
+
+// Settled end of each phase (all of that phase's blocks landed), not the phase's start.
 const frames: Record<string, number> = {
-  base: durationToFrames(motion.logo.base, FPS),
-  sides: durationToFrames(motion.logo.sides, FPS),
-  locked: durationToFrames(motion.logo.locked, FPS),
-  name: durationToFrames(motion.logo.name, FPS),
+  base: waveSettledFrame(0), // 3 blocks down
+  sides: waveSettledFrame(1), // 5 blocks down
+  locked: waveSettledFrame(2), // all 8 blocks down
+  name: nameFrame, // wordmark lands
   final: LOGO_CLIP_DURATION_FRAMES - 1,
 };
 

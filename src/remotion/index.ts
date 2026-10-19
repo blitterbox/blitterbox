@@ -1,3 +1,4 @@
+import "../fonts/index";
 import { registerRoot } from "remotion";
 import { RemotionRoot } from "./Root";
 

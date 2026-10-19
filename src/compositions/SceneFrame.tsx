@@ -3,6 +3,7 @@ import { AbsoluteFill } from "remotion";
 import { Scene } from "../scene/Scene";
 import type { Scene as SceneT } from "../scene/schema";
 import { color, iso, typography } from "../tokens/index";
+import { ANTIALIAS_TEXT_STYLE } from "../tokens/textStyle";
 import { CANVAS_SIZE } from "./constants";
 
 // One module of clear space, reused as the outer inset for the title and figure label.
@@ -34,6 +35,7 @@ export function SceneFrame({ scene, figureLabel }: SceneFrameProps) {
           lineHeight: typography.h1.lineHeight,
           letterSpacing: typography.h1.letterSpacing,
           color: color.graphite,
+          ...ANTIALIAS_TEXT_STYLE,
         }}
       >
         {scene.title}
@@ -50,6 +52,7 @@ export function SceneFrame({ scene, figureLabel }: SceneFrameProps) {
           letterSpacing: typography.label.letterSpacing,
           textTransform: "uppercase",
           color: color.graphite,
+          ...ANTIALIAS_TEXT_STYLE,
         }}
       >
         {figureLabel}
