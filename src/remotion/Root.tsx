@@ -3,6 +3,7 @@ import { Composition } from "remotion";
 import { PrimitivesCheck } from "../primitives/PrimitivesCheck";
 import { SocialCard, SocialCardPropsSchema } from "../compositions/SocialCard";
 import { Clip, ClipPropsSchema } from "../compositions/Clip";
+import { LogoClip, LOGO_CLIP_DURATION_FRAMES } from "../compositions/LogoClip";
 import { FPS, CANVAS_SIZE } from "../compositions/constants";
 import { computeSceneLayout } from "../scene/layout";
 import { validateScene } from "../scene/validate";
@@ -58,6 +59,14 @@ export function RemotionRoot() {
         calculateMetadata={async ({ props }) => ({
           durationInFrames: sceneDurationInFrames(props.scene),
         })}
+      />
+      <Composition
+        id="LogoClip"
+        component={LogoClip}
+        width={CANVAS_SIZE}
+        height={CANVAS_SIZE}
+        fps={FPS}
+        durationInFrames={LOGO_CLIP_DURATION_FRAMES}
       />
     </>
   );

@@ -12,7 +12,9 @@
     "render:primitives-check": "tsx src/primitives/renderCheck.ts",
     "check:motion": "tsx src/motion/check.ts",
     "check:scene": "tsx src/scene/check.ts",
-    "render:social-card-check": "tsx src/compositions/renderCheck.ts"
+    "render:social-card-check": "tsx src/compositions/renderCheck.ts",
+    "generate:logo-blocks": "tsx src/compositions/generateLogoBlocks.ts",
+    "render:logo-clip-frames": "tsx src/compositions/renderLogoClipFrames.ts"
   },
   "devDependencies": {
     "@remotion/cli": "^4.0.536",

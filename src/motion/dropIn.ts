@@ -10,18 +10,27 @@ const dropEasing = Easing.bezier(
 );
 
 /**
+ * Offset (in whatever unit `distance` is) above the resting position for the
+ * drop-in motion at the given frame. 0 once landed. Unit-agnostic so it can
+ * drive a z-offset in modules (scene primitives) or a pixel offset (logo art).
+ */
+export function dropOffset(frame: number, appearAt: number, fps: number, distance: number): number {
+  const durationFrames = durationToFrames(motion.drop.duration, fps);
+  if (durationFrames <= 0) return 0;
+  return interpolate(frame, [appearAt, appearAt + durationFrames], [distance, 0], {
+    easing: dropEasing,
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+}
+
+/**
  * Z-offset (in modules, above the object's resting position) for the drop-in
  * motion at the given frame. 0 once landed; before `appearAt` the caller
  * should not draw the object at all (see primitives' `appearAt` gate).
  */
 export function dropZOffset(frame: number, appearAt: number, fps: number): number {
-  const durationFrames = durationToFrames(motion.drop.duration, fps);
-  if (durationFrames <= 0) return 0;
-  return interpolate(frame, [appearAt, appearAt + durationFrames], [motion.drop.distance, 0], {
-    easing: dropEasing,
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
+  return dropOffset(frame, appearAt, fps, motion.drop.distance);
 }
 
 /** Frame at which an object that started dropping at `appearAt` has landed. */
