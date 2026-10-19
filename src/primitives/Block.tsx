@@ -10,18 +10,20 @@ export interface BlockProps {
   faces: "brand" | "neutral";
   /** Frame at which this block appears; before it, nothing is drawn. */
   appearAt?: number;
+  /** Whether `appearAt` triggers the drop-in motion. Platforms (the ground) set this false. */
+  animate?: boolean;
 }
 
 function pointsAttr(poly: { x: number; y: number }[]): string {
   return poly.map((p) => `${p.x},${p.y}`).join(" ");
 }
 
-export function Block({ at, size, faces: facesKind, appearAt }: BlockProps) {
+export function Block({ at, size, faces: facesKind, appearAt, animate = true }: BlockProps) {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   if (appearAt !== undefined && frame < appearAt) return null;
 
-  const zOffset = appearAt !== undefined ? dropZOffset(frame, appearAt, fps) : 0;
+  const zOffset = animate && appearAt !== undefined ? dropZOffset(frame, appearAt, fps) : 0;
   const effectiveAt: Point3Tuple = [at[0], at[1], at[2] + zOffset];
 
   const faceColors = face[facesKind];

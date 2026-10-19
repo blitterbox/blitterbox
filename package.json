@@ -11,7 +11,8 @@
     "check:iso": "tsx src/iso/check.ts",
     "render:primitives-check": "tsx src/primitives/renderCheck.ts",
     "check:motion": "tsx src/motion/check.ts",
-    "check:scene": "tsx src/scene/check.ts"
+    "check:scene": "tsx src/scene/check.ts",
+    "render:social-card-check": "tsx src/compositions/renderCheck.ts"
   },
   "devDependencies": {
     "@remotion/cli": "^4.0.536",

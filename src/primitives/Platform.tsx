@@ -11,5 +11,7 @@ export interface PlatformProps {
 
 /** The ground. Always neutral faces, so brand faces pop. */
 export function Platform({ at, size, height = 0.25, appearAt }: PlatformProps) {
-  return <Block at={at} size={[size[0], size[1], height]} faces="neutral" appearAt={appearAt} />;
+  return (
+    <Block at={at} size={[size[0], size[1], height]} faces="neutral" appearAt={appearAt} animate={false} />
+  );
 }
