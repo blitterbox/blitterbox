@@ -16,7 +16,10 @@
     "generate:logo-blocks": "tsx src/compositions/generateLogoBlocks.ts",
     "render:logo-clip-frames": "tsx src/compositions/renderLogoClipFrames.ts",
     "mcp:server": "tsx src/mcp/server.ts",
-    "mcp:check": "tsx src/mcp/check.ts"
+    "mcp:check": "tsx src/mcp/check.ts",
+    "render:tower": "tsx src/compositions/renderTower.ts",
+    "render:logo-clip": "tsx src/compositions/renderLogoClipVideo.ts",
+    "swap-test": "tsx src/swapTest.ts"
   },
   "devDependencies": {
     "@remotion/cli": "^4.0.536",
