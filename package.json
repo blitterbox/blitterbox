@@ -6,6 +6,12 @@
   "engines": {
     "node": ">=20"
   },
+  "files": [
+    "src",
+    "public",
+    "tokens.json",
+    "examples"
+  ],
   "scripts": {
     "check:tokens": "tsx src/tokens/check.ts",
     "check:iso": "tsx src/iso/check.ts",
