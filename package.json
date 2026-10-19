@@ -2,6 +2,20 @@
   "name": "blitterbox",
   "version": "1.0.1",
   "private": true,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blitterbox/blitterbox.git"
+  },
+  "homepage": "https://blitterbox.com",
+  "keywords": [
+    "mcp",
+    "remotion",
+    "isometric",
+    "brand",
+    "ai-agents",
+    "claude-code"
+  ],
   "type": "module",
   "engines": {
     "node": ">=20"
@@ -15,7 +29,8 @@
     "dist",
     "public",
     "tokens.json",
-    "examples"
+    "examples",
+    "media"
   ],
   "scripts": {
     "build": "tsc && node scripts/fix-esm-imports.mjs",

@@ -1,24 +1,24 @@
+![Blitterbox](media/tower.png)
+
 # Blitterbox
 
-An MCP server that lets any AI agent make on-brand isometric visuals: a square social graphic (PNG) and a short clip (MP4), both driven by `tokens.json`.
+Brand kits for AI-made videos. Your style guide becomes isometric components your agent can animate.
 
-## Install
+## Quickstart
 
-```
-pnpm install
-```
+1. Install and register the MCP server (see configs below).
+2. Tell your agent to call `get_brand`, then `compose_scene`, then `render`.
+3. Open the file path `render` returns.
 
-Requires Node 20+ and pnpm. Brand source files (tokens, design rules, logo assets) live in `tokens.json`, `DESIGN.md`, and `brand/`.
-
-## Register the MCP server in Claude Code
-
-Once published, install it and register the `blitterbox` bin as the server:
+## Claude Code
 
 ```
 claude mcp add blitterbox -- npx blitterbox
 ```
 
-Or add it directly to your Claude Code MCP config:
+## Cursor
+
+Add to `.cursor/mcp.json` (or your global `~/.cursor/mcp.json`):
 
 ```json
 {
@@ -31,33 +31,48 @@ Or add it directly to your Claude Code MCP config:
 }
 ```
 
-Working on this repo before it's published: run `npm run build` once, then point at the local checkout instead (`npx tsx /absolute/path/to/blitterbox/src/mcp/server.ts`, or `node /absolute/path/to/blitterbox/dist/mcp/server.js`).
+## Tools
 
-Renders and composed scenes land in `./out/` relative to wherever the server is run from.
+### `get_brand`
 
-The server exposes three tools over stdio:
+No input. Returns the resolved design tokens and a summary of the brand rules. Call this first.
 
-| Tool | Input | Output |
-|---|---|---|
-| `get_brand` | none | Resolved design tokens plus a summary of the brand rules |
-| `compose_scene` | scene JSON | `{ ok, sceneId, errors[] }`; valid scenes are saved to `out/scenes/` |
-| `render` | `{ sceneId, kind: "png" \| "mp4" }` | Absolute file path of the render |
+```json
+{}
+```
 
-## Example agent prompt
+### `compose_scene`
 
-> Call `get_brand` to see the Blitterbox tokens and rules. Then build a scene showing a 2x2x2 brand tower next to a 1x1 neutral block on a 6x4 platform, with a callout labeling the tower. Call `compose_scene`, fix any errors it returns, then call `render` with `kind: "png"` to get the social graphic.
+Input is a scene (see `examples/tower.json`). Validates every brand rule and returns every error found, not just the first. Saves valid scenes to `out/scenes/`.
 
-## Scripts
+```json
+{
+  "format": "square",
+  "durationSec": 4,
+  "background": "vellum",
+  "title": "6 colors mapped to 18 faces.",
+  "objects": [
+    { "id": "ground", "type": "platform", "at": [0, 0, 0], "size": [6, 4] },
+    { "id": "tower", "type": "block", "at": [1, 1, 0.25], "size": [2, 2, 2.5], "faces": "brand" }
+  ],
+  "callouts": [{ "text": "FIG. 01 / TOWER", "anchor": "tower" }]
+}
+```
 
-- `pnpm check:tokens` / `check:iso` / `check:motion` / `check:scene` — unit-style checks for each layer
-- `pnpm render:tower` — renders `examples/tower.json` to PNG and MP4
-- `pnpm render:logo-clip` — renders the LogoClip to MP4
-- `pnpm swap-test` — proves the token pipeline: swaps `color.chartreuse`, re-renders, restores `tokens.json`
-- `pnpm mcp:server` — runs the MCP server directly from source (stdio)
-- `pnpm mcp:check` — exercises all three MCP tools end to end, against source
-- `pnpm build` — compiles `src/` to `dist/` (what gets published)
-- `pnpm check:dist` — builds, then exercises all three MCP tools against the compiled `dist/mcp/server.js`
+### `render`
 
-## Repo layout
+Input is a `sceneId` from `compose_scene` and a `kind`. Returns the absolute file path of the render.
 
-See `KICKOFF.md` for the full build spec. Source is organized as `src/tokens`, `src/iso`, `src/primitives`, `src/motion`, `src/scene`, `src/compositions`, `src/mcp`, `src/render`, `src/fonts`. `scripts/` holds build tooling (not published); `dist/` is the compiled, published output.
+```json
+{ "sceneId": "...", "kind": "png" }
+```
+
+`kind` is `"png"` (social graphic, the frame at the end of the animation) or `"mp4"` (the full clip).
+
+## Using your own brand
+
+Replace `tokens.json` at the project root with your own values, in the same shape. `DESIGN.md` documents what each token does and the rules the validator enforces (one highlight color per scene, 0.25-module grid, text length limits). No code changes — every render reads from `tokens.json`.
+
+## License
+
+MIT
