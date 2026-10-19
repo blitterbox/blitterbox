@@ -1,7 +1,8 @@
 import React from "react";
-import { useCurrentFrame } from "remotion";
+import { useCurrentFrame, useVideoConfig } from "remotion";
 import { boxFaces, project, type Point3Tuple } from "../iso/index";
 import { face, iso } from "../tokens/index";
+import { dropZOffset } from "../motion/dropIn";
 
 export interface BlockProps {
   at: Point3Tuple;
@@ -17,10 +18,14 @@ function pointsAttr(poly: { x: number; y: number }[]): string {
 
 export function Block({ at, size, faces: facesKind, appearAt }: BlockProps) {
   const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
   if (appearAt !== undefined && frame < appearAt) return null;
 
+  const zOffset = appearAt !== undefined ? dropZOffset(frame, appearAt, fps) : 0;
+  const effectiveAt: Point3Tuple = [at[0], at[1], at[2] + zOffset];
+
   const faceColors = face[facesKind];
-  const boxFaceGeometry = boxFaces(at, size);
+  const boxFaceGeometry = boxFaces(effectiveAt, size);
 
   return (
     <g>

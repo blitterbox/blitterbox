@@ -9,7 +9,8 @@
   "scripts": {
     "check:tokens": "tsx src/tokens/check.ts",
     "check:iso": "tsx src/iso/check.ts",
-    "render:primitives-check": "tsx src/primitives/renderCheck.ts"
+    "render:primitives-check": "tsx src/primitives/renderCheck.ts",
+    "check:motion": "tsx src/motion/check.ts"
   },
   "devDependencies": {
     "@remotion/cli": "^4.0.536",
