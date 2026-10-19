@@ -20,6 +20,10 @@ const MARK_WIDTH = 360;
 const WORDMARK_FONT_SIZE = 72;
 // Hold on the finished lockup for a beat after the wordmark lands.
 const HOLD_SECONDS = 1;
+// brand/logo/mark-reversed.svg: on a graphite ground, the side face lightens
+// and the stroke switches to vellum so the mark stays visible. Top and front
+// are unchanged between the two variants.
+const REVERSED_SIDE_FILL = "#2E2E2E";
 
 const WAVE_START_TOKENS = [motion.logo.base, motion.logo.sides, motion.logo.locked] as const;
 
@@ -46,14 +50,22 @@ export function LogoClip() {
 
   const nameFrame = durationToFrames(motion.logo.name, fps);
   const scale = MARK_WIDTH / VIEWBOX_WIDTH;
+  // At 1.2s the wordmark lands and the lockup switches to chartreuse-on-graphite
+  // (brand PDF, Voice and Motion); static outputs like SocialCard stay graphite-on-vellum.
+  const nameRevealed = frame >= nameFrame;
+  const strokeColor = nameRevealed ? color.vellum : color.graphite;
 
   return (
     <AbsoluteFill
-      style={{ backgroundColor: color.vellum, alignItems: "center", justifyContent: "center" }}
+      style={{
+        backgroundColor: nameRevealed ? color.graphite : color.vellum,
+        alignItems: "center",
+        justifyContent: "center",
+      }}
     >
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 48 }}>
         <svg viewBox={VIEWBOX} width={VIEWBOX_WIDTH * scale} height={VIEWBOX_HEIGHT * scale}>
-          <g stroke={color.graphite} strokeWidth={2} strokeLinejoin="round">
+          <g stroke={strokeColor} strokeWidth={2} strokeLinejoin="round">
             {timedBlocks.map(({ block, appearAt }, i) => {
               if (frame < appearAt) return null;
               const offset = dropOffset(frame, appearAt, fps, DROP_DISTANCE);
@@ -61,20 +73,23 @@ export function LogoClip() {
                 <g key={i} transform={`translate(0, ${-offset})`}>
                   <polygon points={block.top.points} fill={block.top.fill} />
                   <polygon points={block.front.points} fill={block.front.fill} />
-                  <polygon points={block.side.points} fill={block.side.fill} />
+                  <polygon
+                    points={block.side.points}
+                    fill={nameRevealed ? REVERSED_SIDE_FILL : block.side.fill}
+                  />
                 </g>
               );
             })}
           </g>
         </svg>
-        {frame >= nameFrame && (
+        {nameRevealed && (
           <div
             style={{
               fontFamily: typography.wordmark.fontFamily.join(", "),
               fontWeight: typography.wordmark.fontWeight,
               fontSize: WORDMARK_FONT_SIZE,
               letterSpacing: typography.wordmark.letterSpacing,
-              color: color.graphite,
+              color: color.chartreuse,
               textTransform: "lowercase",
             }}
           >
