@@ -79,11 +79,11 @@ A scene is JSON an agent can write:
   "title": "6 colors mapped to 18 faces.",
   "objects": [
     { "id": "ground", "type": "platform", "at": [0,0,0], "size": [6,4] },
-    { "id": "tower", "type": "block", "at": [1,1,0.25], "size": [2,2,2.4], "faces": "brand" },
+    { "id": "tower", "type": "block", "at": [1,1,0.25], "size": [2,2,2.5], "faces": "brand" },
     { "id": "box2", "type": "block", "at": [4,1,0.25], "size": [1,1,1], "faces": "neutral" },
     { "id": "link", "type": "connector", "from": [3,2,1], "to": [4,2,1] }
   ],
-  "callouts": [ { "text": "FIG. 01 / TOWER · 2×2×2.4M", "anchor": "tower" } ]
+  "callouts": [ { "text": "FIG. 01 / TOWER · 2×2×2.5M", "anchor": "tower" } ]
 }
 ```
 

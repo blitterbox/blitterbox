@@ -10,7 +10,8 @@
     "check:tokens": "tsx src/tokens/check.ts",
     "check:iso": "tsx src/iso/check.ts",
     "render:primitives-check": "tsx src/primitives/renderCheck.ts",
-    "check:motion": "tsx src/motion/check.ts"
+    "check:motion": "tsx src/motion/check.ts",
+    "check:scene": "tsx src/scene/check.ts"
   },
   "devDependencies": {
     "@remotion/cli": "^4.0.536",
@@ -25,6 +26,7 @@
     "@remotion/renderer": "^4.0.536",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
-    "remotion": "^4.0.536"
+    "remotion": "^4.0.536",
+    "zod": "^4.6.7"
   }
 }
