@@ -8,11 +8,22 @@
   },
   "scripts": {
     "check:tokens": "tsx src/tokens/check.ts",
-    "check:iso": "tsx src/iso/check.ts"
+    "check:iso": "tsx src/iso/check.ts",
+    "render:primitives-check": "tsx src/primitives/renderCheck.ts"
   },
   "devDependencies": {
+    "@remotion/cli": "^4.0.536",
     "@types/node": "^22.10.1",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "@remotion/bundler": "^4.0.536",
+    "@remotion/renderer": "^4.0.536",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "remotion": "^4.0.536"
   }
 }
