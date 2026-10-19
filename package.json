@@ -14,7 +14,9 @@
     "check:scene": "tsx src/scene/check.ts",
     "render:social-card-check": "tsx src/compositions/renderCheck.ts",
     "generate:logo-blocks": "tsx src/compositions/generateLogoBlocks.ts",
-    "render:logo-clip-frames": "tsx src/compositions/renderLogoClipFrames.ts"
+    "render:logo-clip-frames": "tsx src/compositions/renderLogoClipFrames.ts",
+    "mcp:server": "tsx src/mcp/server.ts",
+    "mcp:check": "tsx src/mcp/check.ts"
   },
   "devDependencies": {
     "@remotion/cli": "^4.0.536",
@@ -25,6 +27,7 @@
     "typescript": "^5.7.2"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.1",
     "@remotion/bundler": "^4.0.536",
     "@remotion/renderer": "^4.0.536",
     "react": "^19.3.1",
